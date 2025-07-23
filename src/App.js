@@ -1,12 +1,11 @@
+import Body from "./components/Body";
 
-
- function App() {
+function App() {
   return (
-    <>
-      <h1 className="text-100xl font-bold underline">Hello Netflix GPT!</h1>
-    </>
+    <div>
+      <Body />
+    </div>
   );
 }
-
 
 export default App;
