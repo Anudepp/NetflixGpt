@@ -1,7 +1,13 @@
 import React from "react";
 import Header from "./Header";
+import { useState } from "react";
 
 const Login = () => {
+  const [isSignup, setIsSignup] = useState(false);
+
+  const toggleSignupForm = () => {
+    setIsSignup(!isSignup);
+  };
   return (
     <div className="relative h-screen w-full">
       {/* Background Image */}
@@ -22,7 +28,16 @@ const Login = () => {
       {/* Login Form */}
       <div className="absolute inset-0 flex items-center justify-center z-10">
         <form className="bg-black bg-opacity-75 p-8 rounded-md text-white w-[90%] max-w-md">
-          <h2 className="text-3xl font-bold mb-6 text-center">Sign In</h2>
+          <h2 className="text-3xl font-bold mb-6 text-center">
+            {isSignup ? "Sign Up" : "Sign In"}
+          </h2>
+          {/*Conditional Rendering for 'Full name' Input:*/}
+          {isSignup &&
+            <input
+              type="text"
+              placeholder="Full name"
+              className="w-full p-3 mb-4 bg-gray-800 bg-opacity-70 border border-gray-600 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600"
+            />}
 
           <input
             type="email"
@@ -40,7 +55,7 @@ const Login = () => {
             type="submit"
             className="w-full py-3 bg-red-600 hover:bg-red-700 transition-colors rounded font-semibold"
           >
-            Sign In
+            {isSignup ? "Sign Up" : "Sign In"}
           </button>
 
           <div className="flex justify-between items-center mt-4 text-sm text-gray-400">
@@ -54,9 +69,13 @@ const Login = () => {
           </div>
 
           <p className="mt-8 text-gray-400 text-sm text-center">
-            New to Netflix?{" "}
-            <a href="#" className="text-white hover:underline">
-              Sign up now
+            {isSignup ? "Already have an account" : "New to Netflix?"}
+
+            <a
+              className="text-white hover:underline"
+              onClick={toggleSignupForm}
+            >
+              {isSignup ? "Sign In" : "Sign up now"}
             </a>
           </p>
         </form>
