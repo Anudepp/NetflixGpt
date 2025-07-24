@@ -2,6 +2,11 @@ import React, { useRef } from "react";
 import Header from "./Header";
 import { useState } from "react";
 import checkValidData from "../utils/Validate";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword
+} from "firebase/auth";
+import { auth } from "../utils/firebase";
 
 const Login = () => {
   const [isSignup, setIsSignup] = useState(false);
@@ -16,6 +21,46 @@ const Login = () => {
   const handleButtonClick = () => {
     const message = checkValidData(email.current.value, password.current.value);
     setErrorMessage(message);
+    if (message) {
+      return;
+    }
+    if (isSignup) {
+      createUserWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then(userCredential => {
+          // Handle Sign up logic
+          const user = userCredential.user;
+          console.log("User signed up:", user);
+          // ...
+        })
+        .catch(error => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(errorCode + " " + errorMessage);
+        });
+    } else {
+      //Handle Sign In Logic
+
+      signInWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then(userCredential => {
+          // Signed in
+          const user = userCredential.user;
+          console.log("User signed in:", user);
+          // ...
+        })
+        .catch(error => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(errorCode + " " + errorMessage);
+        });
+    }
   };
 
   const toggleSignupForm = () => {
