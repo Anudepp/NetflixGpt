@@ -1,9 +1,22 @@
-import React from "react";
+import React, { useRef } from "react";
 import Header from "./Header";
 import { useState } from "react";
+import checkValidData from "../utils/Validate";
 
 const Login = () => {
   const [isSignup, setIsSignup] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const email = useRef(null);
+  const password = useRef(null);
+
+  console.log(email);
+  console.log(password);
+
+  const handleButtonClick = () => {
+    const message = checkValidData(email.current.value, password.current.value);
+    setErrorMessage(message);
+  };
 
   const toggleSignupForm = () => {
     setIsSignup(!isSignup);
@@ -40,18 +53,27 @@ const Login = () => {
             />}
 
           <input
+            ref={email}
             type="email"
             placeholder="Email or phone number"
             className="w-full p-3 mb-4 bg-gray-800 bg-opacity-70 border border-gray-600 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600"
           />
 
           <input
+            ref={password}
             type="password"
             placeholder="Password"
             className="w-full p-3 mb-6 bg-gray-800 bg-opacity-70 border border-gray-600 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600"
           />
+          <p className="text-red-500 text-sm mb-4">
+            {errorMessage}
+          </p>
 
           <button
+            onClick={e => {
+              e.preventDefault();
+              handleButtonClick();
+            }}
             type="submit"
             className="w-full py-3 bg-red-600 hover:bg-red-700 transition-colors rounded font-semibold"
           >
